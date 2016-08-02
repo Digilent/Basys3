@@ -24,21 +24,15 @@ module PS2Receiver(
     input clk,
     input kclk,
     input kdata,
-    output [31:0] keycodeout
+    output reg [15:0] keycode=0,
+    output reg oflag
     );
     
     wire kclkf, kdataf;
-    reg [7:0]datacur;
-    reg [7:0]dataprev;
-    reg [3:0]cnt;
-    reg [31:0]keycode;
-    reg flag;
-    
-    initial begin
-        keycode[31:0]<=0'h00000000;
-        cnt<=4'b0000;
-        flag<=1'b0;
-    end
+    reg [7:0]datacur=0;
+    reg [7:0]dataprev=0;
+    reg [3:0]cnt=0;
+    reg flag=0;
     
 debouncer #(
     .COUNT_MAX(19),
@@ -74,18 +68,17 @@ always@(negedge(kclkf))begin
     endcase
         if(cnt<=9) cnt<=cnt+1;
         else if(cnt==10) cnt<=0;
-        
 end
 
-always @(posedge flag)begin
-    if (dataprev!=datacur || keycode[15:8] == 8'hf0)begin
-        keycode[31:24]<=keycode[23:16];
-        keycode[23:16]<=keycode[15:8];
-        keycode[15:8]<=dataprev;
-        keycode[7:0]<=datacur;
-        dataprev<=datacur;
-    end
+reg pflag;
+always@(posedge clk) begin
+    if (flag == 1'b1 && pflag == 1'b0) begin
+        keycode <= {dataprev, datacur};
+        oflag <= 1'b1;
+        dataprev <= datacur;
+    end else
+        oflag <= 'b0;
+    pflag <= flag;
 end
-    
-assign keycodeout=keycode;
+
 endmodule

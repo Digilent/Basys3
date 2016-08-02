@@ -21,21 +21,21 @@
 
 
 module uart_tx(
-    input clk,
-    input [7:0] tbus,
-    input tstart,
-    output tx,
-    output ready
+    input       clk   ,
+    input [7:0] tbus  ,
+    input       start,
+    output      tx    ,
+    output      ready 
     );
     parameter CD_MAX=10416, CD_WIDTH=16;
-    reg [CD_WIDTH-1:0] cd_count='b0;
-    reg [3:0] count=4'h0;
-    reg running=1'b0;
+    reg [CD_WIDTH-1:0] cd_count=0;
+    reg [3:0] count=0;
+    reg running=0;
     reg [10:0] shift=11'h7ff;
     always@(posedge clk) begin
         if (running == 1'b0) begin
             shift <= {2'b11, tbus, 1'b0};
-            running <= tstart;
+            running <= start;
             cd_count <= 'b0;
             count <= 'b0;
         end else if (cd_count == CD_MAX) begin
@@ -51,5 +51,5 @@ module uart_tx(
             cd_count <= cd_count + 1'b1;
     end
     assign tx = (running == 1'b1) ? shift[0] : 1'b1;
-    assign ready = ((running == 1'b0 && tstart == 1'b0) || (cd_count == CD_MAX && count == 4'd10)) ? 1'b1 : 1'b0;
+    assign ready = ((running == 1'b0 && start == 1'b0) || (cd_count == CD_MAX && count == 4'd10)) ? 1'b1 : 1'b0;
 endmodule
