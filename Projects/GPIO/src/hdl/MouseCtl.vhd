@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- mouse_controller.vhd
 ------------------------------------------------------------------------
--- Author : Ulrich Zolt·n
+-- Author : Ulrich Zolt√°n
 --          Copyright 2006 Digilent, Inc.
 ------------------------------------------------------------------------
 -- This file contains a controller for a ps/2 compatible mouse device.
@@ -448,7 +448,7 @@ timeout  <= '1' when timeout_cnt = (TIMEOUT_PERIOD_CLOCKS - 1) else '0';
                -- if overflow occurred
                if(x_overflow = '1') then
                   -- inc is -256
-                  inc := "111000000000";
+                  inc := "111100000000";
                else
                   -- inc is sign extended x_inc
                   inc := "1111" & x_inc;
