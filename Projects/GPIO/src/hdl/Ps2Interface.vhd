@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- ps2interface.vhd
 ------------------------------------------------------------------------
--- Author : Ulrich Zolt·n
+-- Author : Ulrich Zolt√°n
 --          Copyright 2006 Digilent, Inc.
 ------------------------------------------------------------------------
 -- This file contains the implementation of a generic bidirectional
@@ -195,7 +195,7 @@ constant DELAY_100US : std_logic_vector(13 downto 0):= "10011100010000";
 constant DELAY_20US  : std_logic_vector(10 downto 0) := "11111010000";
                                                   -- 2000 clock periods
 -- upper limit for 63clk delay counter.
-constant DELAY_63CLK : std_logic_vector(6 downto 0)  := "1111111";
+constant DELAY_63CLK : std_logic_vector(6 downto 0)  := "0111111";
                                                     -- 63 clock periods
 -- delay from debouncing ps2_clk and ps2_data signals
 constant DEBOUNCE_DELAY : std_logic_vector(3 downto 0)  := "1111";
